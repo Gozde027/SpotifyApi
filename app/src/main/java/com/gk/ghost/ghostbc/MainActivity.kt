@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import com.gk.ghost.ghostbc.SpotifyApi.AuthScope
 import com.gk.ghost.ghostbc.SpotifyApi.SpotifyObserver
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationRequest
@@ -63,7 +64,7 @@ class MainActivity : AppCompatActivity(), ConnectionStateCallback {
     //TODO bir listeden track alıp diğerine ekle
     private fun requestLogin(){
         val builder = AuthenticationRequest.Builder(CLIENT_ID,AuthenticationResponse.Type.TOKEN,REDIRECT_URI)
-        builder.setScopes(arrayOf("user-read-private", "streaming","playlist-read-private","playlist-modify-public"))
+        builder.setScopes(AuthScope.getDesiredScopeList())
         val request = builder.build()
         AuthenticationClient.openLoginActivity(this,REQUEST_CODE,request)
     }

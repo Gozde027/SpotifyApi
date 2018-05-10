@@ -1,4 +1,4 @@
-package com.gk.ghost.ghostbc.Activity
+package com.gk.ghost.ghostbc.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity(), ConnectionStateCallback {
     }
 
     companion object {
+        //TODO read from localproperties or smt
         const val CLIENT_ID = ""
         const val REDIRECT_URI = ""
         const val REQUEST_CODE = 1234
@@ -96,6 +97,7 @@ class MainActivity : AppCompatActivity(), ConnectionStateCallback {
                             for (item in it.items) {
                                 textView.text = item.name + "\n"
                             }
+                            openPlayListActivity()
                         }
                         ,{
                     Log.i("OUTPUT","throwable"+it.message)
@@ -103,6 +105,11 @@ class MainActivity : AppCompatActivity(), ConnectionStateCallback {
                     Log.i("OUTPUT","completed")
                 }
                 )
+    }
+
+    private fun openPlayListActivity(){
+        val intent = Intent(applicationContext, PlaylistListActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onLoggedOut() {

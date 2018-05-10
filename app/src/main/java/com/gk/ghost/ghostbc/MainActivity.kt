@@ -22,8 +22,8 @@ class MainActivity : AppCompatActivity(), ConnectionStateCallback {
     }
 
     companion object {
-        const val CLIENT_ID = "54e7c80a13ae47edb3bca9df621cf3b4"
-        const val REDIRECT_URI = "myghostbcapp://callback"
+        const val CLIENT_ID = ""
+        const val REDIRECT_URI = ""
         const val REQUEST_CODE = 1234
         const val TAG = "GOZDESPOTI"
         const val Ghost_CEREMONY = "6Ynmzkom8f82Lpy7kcGBuZ"

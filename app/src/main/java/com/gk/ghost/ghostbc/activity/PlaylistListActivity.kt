@@ -12,10 +12,13 @@ import com.gk.ghost.ghostbc.fragments.PlaylistListFragment
  */
 class PlaylistListActivity : AppCompatActivity(){
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    private val playlistFragment = PlaylistListFragment()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_playlistlist)
-        addFragment(PlaylistListFragment())
+        addFragment(playlistFragment)
+
     }
 
     private fun addFragment(f: Fragment) {

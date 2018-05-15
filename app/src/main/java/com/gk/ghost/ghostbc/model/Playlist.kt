@@ -1,5 +1,7 @@
 package com.gk.ghost.ghostbc.model
 
+import com.gk.ghost.ghostbc.interfaces.PlaylistAdapterItem
+import com.gk.ghost.ghostbc.interfaces.PlaylistItemType
 import com.squareup.moshi.Json
 
 data class Playlist(
@@ -17,4 +19,7 @@ data class Playlist(
     @Json(name = "tracks") val tracks: Tracks,
     @Json(name = "type") val type: String,
     @Json(name = "uri") val uri: String
-)
+) : PlaylistAdapterItem{
+    //TODO return enum?
+    override fun getViewType(): Int = PlaylistItemType.PLAYLIST_ROW.ordinal
+}

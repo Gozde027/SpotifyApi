@@ -1,3 +1,4 @@
+@file:JvmName("ExtensionsUtils")
 package com.gk.ghost.ghostbc.extension
 
 import android.view.LayoutInflater

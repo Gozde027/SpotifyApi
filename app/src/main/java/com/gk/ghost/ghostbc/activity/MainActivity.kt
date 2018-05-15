@@ -1,5 +1,6 @@
 package com.gk.ghost.ghostbc.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -55,6 +56,12 @@ class MainActivity : AppCompatActivity(), ConnectionStateCallback {
             val authResponse = AuthenticationClient.getResponse(resultCode,data)
             if(authResponse.type == AuthenticationResponse.Type.TOKEN){
                 tryApi(authResponse.accessToken)
+
+                val preferences = getSharedPreferences("spo", Context.MODE_PRIVATE)
+                val editor = preferences.edit()
+                editor.putString ("acc", authResponse.accessToken)
+                editor.apply()
+
             }
         }
     }
@@ -71,14 +78,16 @@ class MainActivity : AppCompatActivity(), ConnectionStateCallback {
         AuthenticationClient.openLoginActivity(this, REQUEST_CODE,request)
     }
 
+    //TODO https://medium.com/@krupalshah55/manipulating-shared-prefs-with-kotlin-just-two-lines-of-code-29af62440285
+    // TODO https://stackoverflow.com/questions/47828379/android-sharedpreferences-context
+    // access token
     fun tryApi(accessToken : String){
         spotifyObserver.getUserInfo(accessToken = accessToken)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    textView.text = it.id
-                    getPlaylistlist(it.id,accessToken)
+                    openPlayListActivity()
                 }
                 ,{
                     Log.i("OUTPUT","throwable"+it.message)
@@ -86,25 +95,6 @@ class MainActivity : AppCompatActivity(), ConnectionStateCallback {
                     Log.i("OUTPUT","completed")
                 }
             )
-    }
-
-    fun getPlaylistlist( userId: String, accessToken: String){
-        spotifyObserver.getMyPlaylist(accessToken = accessToken)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        {
-                            for (item in it.items) {
-                                textView.text = item.name + "\n"
-                            }
-                            openPlayListActivity()
-                        }
-                        ,{
-                    Log.i("OUTPUT","throwable"+it.message)
-                },{
-                    Log.i("OUTPUT","completed")
-                }
-                )
     }
 
     private fun openPlayListActivity(){

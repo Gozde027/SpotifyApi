@@ -18,7 +18,6 @@ class PlaylistListActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_playlistlist)
         addFragment(playlistFragment)
-
     }
 
     private fun addFragment(f: Fragment) {

@@ -36,6 +36,11 @@ class PlaylistAdapterHolder : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
         notifyDataSetChanged()
     }
 
+    fun removeShowMore(){
+        items.remove(showMoreItem)
+        notifyDataSetChanged()
+    }
+
     override fun getItemViewType(position: Int) = items[position].getViewType()
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder =

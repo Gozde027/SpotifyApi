@@ -17,7 +17,6 @@ import rx.schedulers.Schedulers
  * Created by Gozde Kaval on 5/10/2018.
  */
 
-//TODO basic list add
 class PlaylistListFragment : Fragment(){
 
     private val playListObserver by lazy { PlaylistObserver() }
@@ -25,29 +24,45 @@ class PlaylistListFragment : Fragment(){
 
     private val adapter = PlaylistAdapterHolder()
 
+    private val linearLayout = LinearLayoutManager(context)
+
+    private var totalPlayListCount: Int = 0
+    private var offset : Int = 0
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         playList.setHasFixedSize(true)
-        playList.layoutManager = LinearLayoutManager(context)
+        playList.layoutManager = linearLayout
         playList.adapter = adapter
+        playList.addOnScrollListener(PlaylistScrollListener(linearLayout,{getMorePlaylist()}))
 
-        getList()
+        getMorePlaylist(true)
     }
 
-    fun getList(){
-        getListFromApi()
+    private fun getMorePlaylist(firstCall: Boolean = false){
+        if(firstCall){
+            getListFromApi()
+        }else{
+            if(offset < totalPlayListCount){
+                getListFromApi()
+            }else{
+                adapter.removeShowMore()
+            }
+        }
     }
 
     private fun getListFromApi(){
-        playListObserver.getList("11132687799")
+        playListObserver.getList("11132687799", offset = offset)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         {
                             //call req. page
                             adapter.addPlayList(it.items)
-
+                            totalPlayListCount = it.total
+                            offset += 20
+                            Log.i("OUTPUT","offset" + offset)
                         } ,{
                     Log.i("OUTPUT","throwable"+it.message)
                 },{

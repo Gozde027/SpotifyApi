@@ -16,7 +16,7 @@ class SpotifyObserver {
         return Observable.create {
             subscriber ->
 
-            val restApi = SpotifyApi(accessToken)
+            val restApi = SpotifyApi()
             val callResponse = restApi.getTrack(trackId)
             val response = callResponse.execute()
 
@@ -35,7 +35,7 @@ class SpotifyObserver {
         return Observable.create {
             subscriber ->
 
-            val restApi = SpotifyApi(accessToken)
+            val restApi = SpotifyApi()
             val callResponse = restApi.getPlaylist(playlistId)
             val response = callResponse.execute()
 
@@ -54,7 +54,7 @@ class SpotifyObserver {
         return Observable.create {
             subscriber ->
 
-            val restApi = SpotifyApi(accessToken)
+            val restApi = SpotifyApi()
             val callResponse = restApi.getUserInformation()
             val response = callResponse.execute()
 
@@ -73,8 +73,8 @@ class SpotifyObserver {
         return Observable.create {
             subscriber ->
 
-            val restApi = SpotifyApi(accessToken)
-            val callResponse = restApi.getPlaylistList(userId)
+            val restApi = SpotifyApi()
+            val callResponse = restApi.getPlaylistList(userId,2,2)
             val response = callResponse.execute()
 
             if(response.isSuccessful){
@@ -92,7 +92,7 @@ class SpotifyObserver {
         return Observable.create {
             subscriber ->
 
-            val restApi = SpotifyApi(accessToken)
+            val restApi = SpotifyApi()
             val callResponse = restApi.getPlaylistMe()
             val response = callResponse.execute()
 

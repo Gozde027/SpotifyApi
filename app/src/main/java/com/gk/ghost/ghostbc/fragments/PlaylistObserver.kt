@@ -9,13 +9,13 @@ import rx.Observable
  */
 class PlaylistObserver {
 
-    fun getList(userId: String) : Observable<PlaylistList> {
+    fun getList(userId: String, limit: Int = 20, offset : Int = 0) : Observable<PlaylistList> {
 
         return Observable.create {
             subscriber ->
 
-            val restApi = SpotifyApi("ac")
-            val callResponse = restApi.getPlaylistList(userId)
+            val restApi = SpotifyApi()
+            val callResponse = restApi.getPlaylistList(userId,limit,offset)
             val response = callResponse.execute()
 
             if(response.isSuccessful){

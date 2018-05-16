@@ -5,6 +5,9 @@
 
     <TextView
         android:text="Playlist"
+        android:padding="5dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:id="@+id/playlistName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

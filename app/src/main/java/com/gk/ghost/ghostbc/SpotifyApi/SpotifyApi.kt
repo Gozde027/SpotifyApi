@@ -1,5 +1,6 @@
 package com.gk.ghost.ghostbc.SpotifyApi
 
+import android.content.Context
 import com.gk.ghost.ghostbc.model.Playlist
 import com.gk.ghost.ghostbc.model.PlaylistList
 import com.gk.ghost.ghostbc.model.Track
@@ -13,15 +14,18 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 /**
  * Created by Gozde Kaval on 5/5/2018.
  */
-class SpotifyApi(accessToken : String) {
+class SpotifyApi() {
 
     companion object {
         private const val BASE_URL = "https://api.spotify.com/"
-        private const val USER_ID = ""
+        private const val USER_ID = "11132687799"
+    }
+
+    private val accessToken : String by lazy {
+        ""//TODO find a way to keep token
     }
 
     private val spotifyInterface: SpotifyInterface
-    private val clientAccessToken = accessToken
 
     init {
         val retrofit = Retrofit.Builder()
@@ -38,9 +42,7 @@ class SpotifyApi(accessToken : String) {
         httpClient.addInterceptor(Interceptor {
             val original = it.request()
             val request = original.newBuilder()
-                    //"Bearer " + clientAccessToken
-                    .addHeader("Authorization", "Bearer " + clientAccessToken)
-                  //  .addHeader("Scope", "playlist-read-private")
+                    .addHeader("Authorization", "Bearer " + accessToken)
                     .method(original.method(),original.body())
                     .build()
              it.proceed(request)
@@ -61,8 +63,8 @@ class SpotifyApi(accessToken : String) {
         return spotifyInterface.getPlaylist(USER_ID,playlistId)
     }
 
-    fun getPlaylistList(userId: String): Call<PlaylistList> {
-        return spotifyInterface.getPlaylistListMe()
+    fun getPlaylistList(userId: String, limit: Int, offset :Int): Call<PlaylistList> {
+        return spotifyInterface.getPlaylistListMe(limit,offset)
     }
 
     fun getPlaylistMe(): Call<PlaylistList> {

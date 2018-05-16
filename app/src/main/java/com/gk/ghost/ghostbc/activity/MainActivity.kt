@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity(), ConnectionStateCallback {
         const val REDIRECT_URI = ""
         const val REQUEST_CODE = 1234
         const val TAG = "GOZDESPOTI"
-        const val Ghost_CEREMONY = "6Ynmzkom8f82Lpy7kcGBuZ"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,12 +54,13 @@ class MainActivity : AppCompatActivity(), ConnectionStateCallback {
         if(requestCode == REQUEST_CODE){
             val authResponse = AuthenticationClient.getResponse(resultCode,data)
             if(authResponse.type == AuthenticationResponse.Type.TOKEN){
-                tryApi(authResponse.accessToken)
-
-                val preferences = getSharedPreferences("spo", Context.MODE_PRIVATE)
+                //tryApi(authResponse.accessToken)
+                Log.i("TOKEN",authResponse.accessToken)
+                openPlayListActivity()
+               /* val preferences = getSharedPreferences("spo", Context.MODE_PRIVATE)
                 val editor = preferences.edit()
                 editor.putString ("acc", authResponse.accessToken)
-                editor.apply()
+                editor.apply()*/
 
             }
         }

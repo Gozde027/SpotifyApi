@@ -9,3 +9,4 @@
 .externalNativeBuild
 /.idea/sonarlint/issuestore
 /.idea/vcs.xml
+/gradle.properties

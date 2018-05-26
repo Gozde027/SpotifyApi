@@ -30,25 +30,6 @@ class SpotifyObserver {
         }
     }
 
-    fun getPlaylist(playlistId : String, accessToken : String) : Observable<Playlist>{
-
-        return Observable.create {
-            subscriber ->
-
-            val restApi = SpotifyApi()
-            val callResponse = restApi.getPlaylist(playlistId)
-            val response = callResponse.execute()
-
-            if(response.isSuccessful){
-                val searchOutput = response.body()
-                subscriber.onNext(searchOutput)
-                subscriber.onCompleted()
-            }else{
-                subscriber.onError(Throwable(response.message()))
-            }
-        }
-    }
-
     fun getUserInfo(accessToken : String) : Observable<User>{
 
         return Observable.create {

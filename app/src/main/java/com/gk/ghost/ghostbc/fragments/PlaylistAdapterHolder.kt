@@ -53,4 +53,17 @@ class PlaylistAdapterHolder : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
     override fun getItemCount(): Int {
         return items.size
     }
+
+    fun getPlayLists() : List<Playlist>{
+
+        return items.filter {
+            it.getViewType() == PlaylistItemType.PLAYLIST_ROW.ordinal
+        }.map { it as Playlist }
+
+    }
+
+    fun getPlayList(withIndex : Int) : Playlist{
+        val playListList = getPlayLists()
+        return playListList.get(withIndex)
+    }
 }

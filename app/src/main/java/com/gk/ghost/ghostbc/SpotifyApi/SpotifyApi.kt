@@ -1,10 +1,8 @@
 package com.gk.ghost.ghostbc.SpotifyApi
 
-import android.content.Context
-import com.gk.ghost.ghostbc.model.Playlist
-import com.gk.ghost.ghostbc.model.PlaylistList
-import com.gk.ghost.ghostbc.model.Track
-import com.gk.ghost.ghostbc.model.User
+import com.gk.ghost.ghostbc.LocalProperties
+import com.gk.ghost.ghostbc.application.MyApplication
+import com.gk.ghost.ghostbc.model.*
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Call
@@ -18,11 +16,12 @@ class SpotifyApi() {
 
     companion object {
         private const val BASE_URL = "https://api.spotify.com/"
-        private const val USER_ID = "11132687799"
     }
 
     private val accessToken : String by lazy {
-        ""//TODO find a way to keep token
+
+        val sharedPref = MyApplication.prefHelper.defaultPrefs()
+        sharedPref.getString("TOKEN","")
     }
 
     private val spotifyInterface: SpotifyInterface
@@ -59,8 +58,8 @@ class SpotifyApi() {
         return spotifyInterface.getTrack(trackId)
     }
 
-    fun getPlaylist(playlistId:String):Call<Playlist>{
-        return spotifyInterface.getPlaylist(USER_ID,playlistId)
+    fun getPlaylist(userId: String = LocalProperties.USER_ID, playlistId:String):Call<Playlist>{
+        return spotifyInterface.getPlaylist(userId,playlistId)
     }
 
     fun getPlaylistList(userId: String, limit: Int, offset :Int): Call<PlaylistList> {
@@ -69,5 +68,14 @@ class SpotifyApi() {
 
     fun getPlaylistMe(): Call<PlaylistList> {
         return spotifyInterface.getPlaylistListMe()
+    }
+
+    fun getTracksOfPlaylist(userId: String = LocalProperties.USER_ID, playlistId: String) : Call<Tracks>{
+        return spotifyInterface.getTracksOfPlaylist(userId,playlistId)
+    }
+
+    //POST
+    fun createPlayList(userId: String = LocalProperties.USER_ID, body : Map<String, Any>) : Call<Playlist>{
+        return spotifyInterface.createNewPlayList(userId,body)
     }
 }

@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import com.gk.ghost.ghostbc.LocalProperties
 import com.gk.ghost.ghostbc.R
 import com.gk.ghost.ghostbc.SpotifyApi.AuthScope
 import com.gk.ghost.ghostbc.SpotifyApi.SpotifyObserver
+import com.gk.ghost.ghostbc.application.MyApplication
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationRequest
 import com.spotify.sdk.android.authentication.AuthenticationResponse
@@ -25,9 +27,6 @@ class MainActivity : AppCompatActivity(), ConnectionStateCallback {
     }
 
     companion object {
-        //TODO read from localproperties or smt
-        const val CLIENT_ID = ""
-        const val REDIRECT_URI = ""
         const val REQUEST_CODE = 1234
         const val TAG = "GOZDESPOTI"
     }
@@ -54,33 +53,25 @@ class MainActivity : AppCompatActivity(), ConnectionStateCallback {
         if(requestCode == REQUEST_CODE){
             val authResponse = AuthenticationClient.getResponse(resultCode,data)
             if(authResponse.type == AuthenticationResponse.Type.TOKEN){
-                //tryApi(authResponse.accessToken)
-                Log.i("TOKEN",authResponse.accessToken)
+
+                val editor = MyApplication.prefHelper.defaultPrefs().edit()
+                editor.putString("TOKEN",authResponse.accessToken)
+                editor.apply()
+
                 openPlayListActivity()
-               /* val preferences = getSharedPreferences("spo", Context.MODE_PRIVATE)
-                val editor = preferences.edit()
-                editor.putString ("acc", authResponse.accessToken)
-                editor.apply()*/
 
             }
         }
     }
 
-    //TODO create playlist dene
-    //https://beta.developer.spotify.com/documentation/web-api/reference/playlists/create-playlist/
-    //"playlist-modify-public", "playlist-modify-private"
-
-    //TODO bir listeden track alıp diğerine ekle
     private fun requestLogin(){
-        val builder = AuthenticationRequest.Builder(CLIENT_ID,AuthenticationResponse.Type.TOKEN, REDIRECT_URI)
+        val builder = AuthenticationRequest.Builder(LocalProperties.CLIENT_ID,
+                AuthenticationResponse.Type.TOKEN, LocalProperties.REDIRECT_URI)
         builder.setScopes(AuthScope.getDesiredScopeList())
         val request = builder.build()
         AuthenticationClient.openLoginActivity(this, REQUEST_CODE,request)
     }
 
-    //TODO https://medium.com/@krupalshah55/manipulating-shared-prefs-with-kotlin-just-two-lines-of-code-29af62440285
-    // TODO https://stackoverflow.com/questions/47828379/android-sharedpreferences-context
-    // access token
     fun tryApi(accessToken : String){
         spotifyObserver.getUserInfo(accessToken = accessToken)
             .subscribeOn(Schedulers.io())
@@ -98,6 +89,7 @@ class MainActivity : AppCompatActivity(), ConnectionStateCallback {
     }
 
     private fun openPlayListActivity(){
+
         val intent = Intent(applicationContext, PlaylistListActivity::class.java)
         startActivity(intent)
     }

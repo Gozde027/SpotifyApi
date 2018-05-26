@@ -32,7 +32,7 @@ enum class AuthScope(val scope : String) {
 
     companion object {
         fun getDesiredScopeList() : Array<String> {
-            return arrayOf(READ_PRIVATE.scope,READ_COLLABORATIVE.scope,USER_READ_PRIVATE.scope)
+            return arrayOf(READ_PRIVATE.scope,READ_COLLABORATIVE.scope,USER_READ_PRIVATE.scope,MODIFY_PRIVATE.scope,MODIFY_PUBLIC.scope)
         }
     }
 

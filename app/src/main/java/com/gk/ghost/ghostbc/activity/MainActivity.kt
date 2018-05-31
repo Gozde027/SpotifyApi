@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity(), ConnectionStateCallback {
 
     companion object {
         const val REQUEST_CODE = 1234
-        const val TAG = "GOZDESPOTI"
+        const val TAG = "GOZDESPOTIFY"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
